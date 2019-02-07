@@ -3,7 +3,7 @@ const path = require(`path`);
 const uuidV4 = require('uuid/v4');
 const argUtils = require(`generator-team/generators/app/args`);
 const prompts = require(`generator-team/generators/app/prompt`);
-const util = require(`generator-team/generators/app/utility`);
+const util = require('../app/utility');
 const Generator = require(`yeoman-generator`);
 
 module.exports = class extends Generator {

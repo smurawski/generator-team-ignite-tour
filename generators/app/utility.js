@@ -51,6 +51,148 @@ function tryFindBuild(account, teamProject, token, type, target, callback) {
     });
  }
 
+ function tryFindRelease(args, callback) {
+   'use strict';
+
+   findRelease(args, function (e, rel) {
+      if (e && e.code === `NotFound`) {
+         callback(null, undefined);
+      } else {
+         callback(e, rel);
+      }
+   });
+}
+
+function findRelease(args, callback) {
+   "use strict";
+
+   var name = `${args.type} Release`
+
+   var options = util.addUserAgent({
+      "method": `GET`,
+      "headers": {
+         "cache-control": `no-cache`,
+         "authorization": `Basic ${args.token}`
+      },
+      "url": `${util.getFullURL(args.account, true, util.RELEASE_MANAGEMENT_SUB_DOMAIN)}/${args.teamProject.name}/_apis/release/definitions`,
+      "qs": {
+         "api-version": util.RELEASE_API_VERSION
+      }
+   });
+
+   request(options, function (e, response, body) {
+      if (response.statusCode !== 200) {
+         // The body is HTML
+         var dom = cheerio.load(body);
+         callback({
+            "message": `Server Error: ${dom(`title`).text()}`,
+            "code": `ServerError`
+         }, undefined);
+
+         return;
+      }
+
+      var obj = JSON.parse(body);
+
+      var rel = obj.value.find(function (i) {
+         return i.name.toLowerCase() === name.toLowerCase();
+      });
+
+      if (!rel) {
+         callback({
+            "message": `Release ${name} not found`,
+            "code": `NotFound`
+         }, undefined);
+      } else {
+         callback(e, rel);
+      }
+   });
+}
+
+ function tryFindRepo(account, teamProject, token, repoName, callback) {
+    findRepo(account, teamProject, token, repoName, function (e, rp) {
+       if (e && e.code === `NotFound`) {
+          callback(null, undefined);
+       } else {
+          callback(e, rp);
+       }
+    });
+ }
+
+ function findRepo(account, teamProject, token, repoName, callback) {
+   'use strict';
+ 
+   var options = util.addUserAgent({
+      "method": `GET`,
+      "headers": {
+         "cache-control": `no-cache`,
+         "authorization": `Basic ${token}`
+      },
+      "url": `${util.getFullURL(account)}/${teamProject.id}/_apis/git/repositories`,
+      "qs": {
+         "api-version": util.PROJECT_API_VERSION
+      }
+   });
+
+   request(options, function (e, response, body) {
+      var obj = JSON.parse(body);
+      
+      var rp = obj.value.find(function (i) {
+         return i.name.toLowerCase() === repoName.toLowerCase();
+      });
+
+      if (!rp) {
+         callback({
+            "message": `Repository ${repoName} not found`,
+            "code": `NotFound`
+         }, undefined);
+      } else {
+         callback(e, rp);
+      }
+   });
+ }
+
+ function tryFindVariableGroup(account, teamProject, token, variableGroupName, callback) {
+   findVariableGroup(account, teamProject, token, variableGroupName, function (e, vg) {
+      if (e && e.code === `NotFound`) {
+         callback(null, undefined);
+      } else {
+         callback(e, vg);
+      }
+   });
+ }
+
+ function findVariableGroup(account, teamProject, token, variableGroupName, callback){
+   'use strict';
+ 
+   var options = util.addUserAgent({
+      "method": `GET`,
+      "headers": {
+         "cache-control": `no-cache`,
+         "authorization": `Basic ${token}`
+      },
+      "url": `${util.getFullURL(account)}/${teamProject.id}/_apis/distributedtask/variablegroups`,
+      qs: { 'api-version': `5.1-preview.1` }
+   });
+
+   request(options, function (e, response, body) {
+      var obj = JSON.parse(body);
+      
+      var vg = obj.value.find(function (i) {
+         return i.name.toLowerCase() === variableGroupName.toLowerCase();
+      });
+
+      if (!vg) {
+         callback({
+            "message": `Variable group ${variableGroupName} not found`,
+            "code": `NotFound`
+         }, undefined);
+      } else {
+         callback(e, vg);
+      }
+   });
+ }
+
 module.exports = {
 
     // Exports the portions of the file we want to share with files that require
@@ -82,7 +224,7 @@ module.exports = {
     needsApiKey: util.needsApiKey,
     checkStatus: util.checkStatus,
     findProject: util.findProject,
-    findRelease: util.findRelease,
+    findRelease: findRelease,
     validateTFS: util.validateTFS,
     isDockerHub: util.isDockerHub,
     getAzureSubs: util.getAzureSubs,
@@ -96,7 +238,7 @@ module.exports = {
     needsRegistry: util.needsRegistry,
     findAllQueues: util.findAllQueues,
     getTFSVersion: util.getTFSVersion,
-    tryFindRelease: util.tryFindRelease,
+    tryFindRelease: tryFindRelease,
     reconcileValue: util.reconcileValue,
     searchProfiles: util.searchProfiles,
     tryFindProject: util.tryFindProject,
@@ -141,5 +283,9 @@ module.exports = {
     validateClusterResourceGroup: util.validateClusterResourceGroup,
     validateDockerCertificatePath: util.validateDockerCertificatePath,
     findDockerRegistryServiceEndpoint: util.findDockerRegistryServiceEndpoint,
-    tryFindDockerRegistryServiceEndpoint: util.tryFindDockerRegistryServiceEndpoint
+    tryFindDockerRegistryServiceEndpoint: util.tryFindDockerRegistryServiceEndpoint,
+    tryFindRepo: tryFindRepo,
+    findRepo: findRepo,
+    tryFindVariableGroup: tryFindVariableGroup,
+    findVariableGroup: findVariableGroup
  };

@@ -21,6 +21,7 @@ function run(args, gen, done) {
    var approverDisplayName;
    var dockerEndpoint = {};
    var dockerRegistryEndpoint = {};
+   var variableGroup = {};
    var token = util.encodePat(args.pat);
 
    // PowerShell
@@ -103,8 +104,15 @@ function run(args, gen, done) {
                   azureEndpoint = undefined;
                   inParallel(null, undefined);
                }
-            }
+            }    
          ], mainSeries);
+      },
+      function (mainSeries) {
+         // Get the Variable group to mapp
+         util.findVariableGroup(args.tfs, teamProject, token, `KeyVault`, function (err, vg) {
+            variableGroup = vg;
+            mainSeries(err, variableGroup);
+         });
       },
       function (mainSeries) {
          var relArgs = {
@@ -130,7 +138,8 @@ function run(args, gen, done) {
             dockerRegistryEndpoint: dockerRegistryEndpoint,
             clusterResourceGroup: args.clusterResourceGroup,
             endpoint: azureEndpoint ? azureEndpoint.id : null,
-            dockerRegistryPassword: args.dockerRegistryPassword
+            dockerRegistryPassword: args.dockerRegistryPassword,
+            variableGroupId: variableGroup.id
          };
 
          findOrCreateRelease(relArgs, gen, function (err, rel) {
@@ -176,7 +185,7 @@ function findOrCreateRelease(args, gen, callback) {
 function createRelease(args, gen, callback) {
    'use strict';
 
-   let releaseDefName = `${args.type}`;
+   let releaseDefName = `${args.type} Release`;
 
    gen.log.ok(`Creating ${releaseDefName} release definition`);
 
@@ -217,7 +226,8 @@ function createRelease(args, gen, callback) {
       '{{dockerRegistryEndpoint}}': args.dockerRegistryEndpoint ? args.dockerRegistryEndpoint.id : null,
       '{{ReleaseDefName}}': releaseDefName,
       '{{ClusterName}}': args.clusterName,
-      '{{ClusterResourceGroup}}': args.clusterResourceGroup
+      '{{ClusterResourceGroup}}': args.clusterResourceGroup,
+      '{{VariableGroup}}': args.variableGroupId
    };
 
    var contents = fs.readFileSync(args.template, 'utf8');

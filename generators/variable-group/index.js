@@ -1,7 +1,7 @@
 const Generator = require('yeoman-generator');
 const argUtils = require(`generator-team/generators/app/args`);
 const prompts = require(`generator-team/generators/app/prompt`);
-const util = require(`generator-team/generators/app/utility`);
+const util = require('../app/utility');
 const app = require(`./app`);
 
 module.exports = class extends Generator {
@@ -11,8 +11,8 @@ module.exports = class extends Generator {
 
         argUtils.applicationName(this);
         argUtils.tfs(this);
-        argUtils.pat(this);
-        
+        argUtils.azureSub(this);
+        argUtils.pat(this); 
     }
 
     prompting() {
@@ -24,16 +24,26 @@ module.exports = class extends Generator {
         return this.prompt([
             prompts.applicationName(this),
             prompts.tfs(this),
+            prompts.azureSubInput(this),
+            prompts.azureSubList(this),
             prompts.pat(this)
         ]).then(function (answers) {
             this.applicationName = util.reconcileValue(cmdLnInput.options.applicationName, answers.applicationName, ``);
             this.tfs = util.reconcileValue(cmdLnInput.options.tfs, answers.tfs, ``);
+            this.azureSub = util.reconcileValue(cmdLnInput.options.azureSub, answers.azureSub, ``);
             this.pat = util.reconcileValue(cmdLnInput.options.pat, answers.pat, ``);
         }.bind(this));
     }
 
-    configuring() {
-        app.run(this, this.async());
+    writing() {
+        var args = {
+            azureSub: this.azureSub,
+            pat: this.pat,
+            tfs: this.tfs,
+            project: this.applicationName,
+            variableGroupName: `KeyVault`
+        }
+        app.run(args, this, this.async());
     }
 
 };

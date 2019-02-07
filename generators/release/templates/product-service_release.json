@@ -1,7 +1,9 @@
 {
-    "name": "Product Service Release",   
+    "name": "{{ReleaseDefName}}",
     "variables": {},
-    "variableGroups": [],
+    "variableGroups": [
+        "{{VariableGroup}}"
+    ],
     "environments": [
         {
             "name": "Dev",
@@ -118,7 +120,7 @@
         },
         {
             "name": "UAT",
-            "rank": 2,           
+            "rank": 2,
             "variables": {},
             "variableGroups": [],
             "preDeployApprovals": {
@@ -227,7 +229,7 @@
                 "releasesToKeep": 3,
                 "retainBuild": true
             },
-            "processParameters": {}            
+            "processParameters": {}
         },
         {
             "name": "Prod",
@@ -340,7 +342,7 @@
                 "releasesToKeep": 3,
                 "retainBuild": true
             },
-            "processParameters": {}            
+            "processParameters": {}
         }
     ],
     "artifacts": [
@@ -390,5 +392,5 @@
             ],
             "triggerType": 1
         }
-    ]  
+    ]
 }

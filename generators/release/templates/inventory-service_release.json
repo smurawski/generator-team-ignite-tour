@@ -1,7 +1,9 @@
 {
-    "name": "Inventory Service Release",   
+    "name": "{{ReleaseDefName}}",   
     "variables": {},
-    "variableGroups": [],
+    "variableGroups": [
+        "{{VariableGroup}}"
+    ],
     "environments": [
         {
             "name": "Dev",

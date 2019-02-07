@@ -1,7 +1,9 @@
 {
-    "name": "Web App Infra Release",
+    "name": "{{ReleaseDefName}}",
     "variables": {},
-    "variableGroups": [],
+    "variableGroups": [
+        "{{VariableGroup}}"
+    ],
     "environments": [
         {
             "name": "Dev",
@@ -99,7 +101,7 @@
                         }
                     ]
                 }
-                
+
             ],
             "environmentOptions": {
                 "emailNotificationType": "OnlyOnFailure",

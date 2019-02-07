@@ -1,7 +1,7 @@
 const Generator = require('yeoman-generator');
 const argUtils = require(`generator-team/generators/app/args`);
 const prompts = require(`generator-team/generators/app/prompt`);
-const util = require(`generator-team/generators/app/utility`);
+const util = require('../app/utility');
 const app = require(`./app`);
 
 module.exports = class extends Generator {
@@ -37,8 +37,14 @@ module.exports = class extends Generator {
         }.bind(this));
     }
 
-    configuring() {
-        app.run(this, this.async());
+    writing() {
+        var args = {
+            pat: this.pat,
+            tfs: this.tfs,
+            repoName: this.repoName,
+            project: this.applicationName
+        }
+        app.run(args, this, this.async());
     }
 
 };

@@ -1,7 +1,7 @@
 const Generator = require('yeoman-generator');
 const argUtils = require(`generator-team/generators/app/args`);
 const prompts = require(`generator-team/generators/app/prompt`);
-const util = require(`generator-team/generators/app/utility`);
+const util = require('../app/utility');
 
 module.exports = class extends Generator {
 

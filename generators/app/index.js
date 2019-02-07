@@ -4,7 +4,7 @@ const yosay = require(`yosay`);
 const Generator = require(`yeoman-generator`);
 const argUtils = require(`generator-team/generators/app/args`);
 const prompts = require(`generator-team/generators/app/prompt`);
-const util = require(`generator-team/generators/app/utility`);
+const util = require('../app/utility');
 const compose = require(`generator-team/generators/app/compose`);
 const path = require(`path`);
 
@@ -16,6 +16,7 @@ module.exports = class extends Generator {
         // Order is important
         // These are position based arguments for this generator. If they are not provided
         // via the command line they will be queried during the prompting priority
+        // applicationName is city in this context
         argUtils.applicationName(this);
         argUtils.tfs(this);
         argUtils.pat(this);
@@ -89,25 +90,6 @@ module.exports = class extends Generator {
             arguments: [`frontend`, this.applicationName, this.tfs, this.pat]
         });
 
-        // Setup Builds
-        this.composeWith(`team-ignite-tour:build`, {
-            arguments: [`web-app-infra`, this.applicationName, this.tfs, `Hosted VS2017`, this.target, this.azureSub, ``, ``, ``, this.pat, ``]
-        });
-        this.composeWith(`team-ignite-tour:build`, {
-            arguments: [`inventory-service`, this.applicationName, this.tfs, `Hosted Ubuntu 1604`, this.target, this.azureSub, ``, ``, ``, this.pat, ``]
-        });
-        this.composeWith(`team-ignite-tour:build`, {
-            arguments: [`product-service`, this.applicationName, this.tfs, `Hosted Ubuntu 1604`, this.target, this.azureSub, ``, ``, ``, this.pat, ``]
-        });
-        this.composeWith(`team-ignite-tour:build`, {
-            arguments: [`frontend`, this.applicationName, this.tfs, `Hosted Ubuntu 1604`, this.target, this.azureSub, ``, ``, ``, this.pat, ``]
-        });
-
-        // // Set up KeyVault Variable Group
-        // this.composeWith(`team-ignite-tour:variable-group`, {
-        //     arguments: [this.applicationName, this.tfs, this.pat]
-        // });
-
         // Set up local git repos
         this.composeWith(`team-ignite-tour:git`, {
             arguments: [`web-app-infra`, this.applicationName, this.tfs, `clone`, this.pat]
@@ -134,7 +116,7 @@ module.exports = class extends Generator {
         this.composeWith(`team-ignite-tour:git`, {
             arguments: [`inventory-service`, this.applicationName, this.tfs, `push`, this.pat]
         });
-        
+
         this.composeWith(`team-ignite-tour:git`, {
             arguments: [`product-service`, this.applicationName, this.tfs, `clone`, this.pat]
         });
@@ -147,7 +129,7 @@ module.exports = class extends Generator {
         this.composeWith(`team-ignite-tour:git`, {
             arguments: [`product-service`, this.applicationName, this.tfs, `push`, this.pat]
         });
-        
+
         this.composeWith(`team-ignite-tour:git`, {
             arguments: [`frontend`, this.applicationName, this.tfs, `clone`, this.pat]
         });
@@ -159,9 +141,28 @@ module.exports = class extends Generator {
         });
         this.composeWith(`team-ignite-tour:git`, {
             arguments: [`frontend`, this.applicationName, this.tfs, `push`, this.pat]
-        });        
+        });
 
-    // Setup Releases
+        // Setup Builds
+        this.composeWith(`team-ignite-tour:build`, {
+            arguments: [`web-app-infra`, this.applicationName, this.tfs, `Hosted VS2017`, this.target, this.azureSub, ``, ``, ``, this.pat, ``]
+        });
+        this.composeWith(`team-ignite-tour:build`, {
+            arguments: [`inventory-service`, this.applicationName, this.tfs, `Hosted Ubuntu 1604`, this.target, this.azureSub, ``, ``, ``, this.pat, ``]
+        });
+        this.composeWith(`team-ignite-tour:build`, {
+            arguments: [`product-service`, this.applicationName, this.tfs, `Hosted Ubuntu 1604`, this.target, this.azureSub, ``, ``, ``, this.pat, ``]
+        });
+        this.composeWith(`team-ignite-tour:build`, {
+            arguments: [`frontend`, this.applicationName, this.tfs, `Hosted Ubuntu 1604`, this.target, this.azureSub, ``, ``, ``, this.pat, ``]
+        });
+
+        // Set up KeyVault Variable Group
+        this.composeWith(`team-ignite-tour:variable-group`, {
+            arguments: [this.applicationName, this.tfs, this.azureSub, this.pat]
+        });
+
+        // Setup Releases
         this.composeWith(`team-ignite-tour:release`, {
             arguments: [
                 `web-app-infra`,
@@ -170,14 +171,14 @@ module.exports = class extends Generator {
                 `Hosted VS2017`,
                 this.target,
                 this.azureSub,
-                this.dockerHost, 
-                this.dockerRegistry, 
-                this.dockerRegistryId, 
+                this.dockerHost,
+                this.dockerRegistry,
+                this.dockerRegistryId,
                 this.dockerPorts,
-                this.dockerRegistryPassword, 
-                this.pat, 
-                this.customFolder, 
-                this.clusterName, 
+                this.dockerRegistryPassword,
+                this.pat,
+                this.customFolder,
+                this.clusterName,
                 this.clusterResourceGroup
             ]
         });
@@ -189,14 +190,14 @@ module.exports = class extends Generator {
                 `Hosted VS2017`,
                 this.target,
                 this.azureSub,
-                this.dockerHost, 
-                this.dockerRegistry, 
-                this.dockerRegistryId, 
+                this.dockerHost,
+                this.dockerRegistry,
+                this.dockerRegistryId,
                 this.dockerPorts,
-                this.dockerRegistryPassword, 
-                this.pat, 
-                this.customFolder, 
-                this.clusterName, 
+                this.dockerRegistryPassword,
+                this.pat,
+                this.customFolder,
+                this.clusterName,
                 this.clusterResourceGroup
             ]
         });
@@ -208,14 +209,14 @@ module.exports = class extends Generator {
                 `Hosted VS2017`,
                 this.target,
                 this.azureSub,
-                this.dockerHost, 
-                this.dockerRegistry, 
-                this.dockerRegistryId, 
+                this.dockerHost,
+                this.dockerRegistry,
+                this.dockerRegistryId,
                 this.dockerPorts,
-                this.dockerRegistryPassword, 
-                this.pat, 
-                this.customFolder, 
-                this.clusterName, 
+                this.dockerRegistryPassword,
+                this.pat,
+                this.customFolder,
+                this.clusterName,
                 this.clusterResourceGroup
             ]
         });
@@ -227,14 +228,14 @@ module.exports = class extends Generator {
                 `Hosted VS2017`,
                 this.target,
                 this.azureSub,
-                this.dockerHost, 
-                this.dockerRegistry, 
-                this.dockerRegistryId, 
+                this.dockerHost,
+                this.dockerRegistry,
+                this.dockerRegistryId,
                 this.dockerPorts,
-                this.dockerRegistryPassword, 
-                this.pat, 
-                this.customFolder, 
-                this.clusterName, 
+                this.dockerRegistryPassword,
+                this.pat,
+                this.customFolder,
+                this.clusterName,
                 this.clusterResourceGroup
             ]
         });
