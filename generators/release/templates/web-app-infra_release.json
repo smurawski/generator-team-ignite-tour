@@ -1,0 +1,479 @@
+{
+    "name": "Web App Infra Release",
+    "variables": {},
+    "variableGroups": [],
+    "environments": [
+        {
+            "name": "Dev",
+            "rank": 1,
+            "variables": {},
+            "variableGroups": [],
+            "preDeployApprovals": {
+                "approvals": [
+                    {
+                        "rank": 1,
+                        "isAutomated": true,
+                        "isNotificationOn": false
+                    }
+                ]
+            },
+            "deployStep": {},
+            "postDeployApprovals": {
+                "approvals": [
+                    {
+                        "rank": 1,
+                        "isAutomated": true,
+                        "isNotificationOn": false
+                    }
+                ]
+            },
+            "deployPhases": [
+                {
+                    "deploymentInput": {
+                        "parallelExecution": {
+                            "parallelExecutionType": 0
+                        },
+                        "skipArtifactsDownload": false,
+                        "artifactsDownloadInput": {
+                            "downloadInputs": [
+                                {
+                                    "artifactItems": [],
+                                    "alias": "{{BuildName}}",
+                                    "artifactType": "Build",
+                                    "artifactDownloadMode": "All"
+                                }
+                            ]
+                        },
+                        "queueId": "{{QueueId}}",
+                        "demands": [],
+                        "enableAccessToken": false,
+                        "timeoutInMinutes": 0,
+                        "jobCancelTimeoutInMinutes": 1,
+                        "condition": "succeeded()",
+                        "overrideInputs": {}
+                    },
+                    "rank": 1,
+                    "phaseType": 1,
+                    "name": "Agent job",
+                    "refName": null,
+                    "workflowTasks": [
+                        {
+                            "environment": {},
+                            "taskId": "94a74903-f93f-4075-884f-dc11f34058b4",
+                            "version": "2.*",
+                            "name": "Azure Deployment:Create Or Update Resource Group action on $(app-rg-dev)",
+                            "refName": "",
+                            "enabled": true,
+                            "alwaysRun": false,
+                            "continueOnError": false,
+                            "timeoutInMinutes": 0,
+                            "definitionType": "task",
+                            "overrideInputs": {},
+                            "condition": "succeeded()",
+                            "inputs": {
+                                "ConnectedServiceNameSelector": "ConnectedServiceName",
+                                "ConnectedServiceName": "{{ConnectedServiceID}}",
+                                "ConnectedServiceNameClassic": "",
+                                "action": "Create Or Update Resource Group",
+                                "resourceGroupName": "$(app-rg-dev)",
+                                "location": "West US 2",
+                                "templateLocation": "Linked artifact",
+                                "csmFileLink": "",
+                                "csmParametersFileLink": "",
+                                "csmFile": "$(System.DefaultWorkingDirectory)/{{BuildName}}/drop/template.json",
+                                "csmParametersFile": "$(System.DefaultWorkingDirectory)/{{BuildName}}/drop/parameters.json",
+                                "overrideParameters": "-appServicePlanName \"tw-svc-SRE10-{{ProjectName}}-dev\" -frontendAppName \"tw-frontend-SRE10-{{ProjectName}}-dev\" -inventoryServiceName \"tw-inventory-SRE10-{{ProjectName}}-dev\" -sqlConnectionString \"$(InventoryContextSQL-dev)\" -productServiceName \"tw-product-SRE10-{{ProjectName}}-dev\" -cosmosConnectionString \"$(MongoConnectionString-dev)\"",
+                                "deploymentMode": "Complete",
+                                "enableDeploymentPrerequisites": "None",
+                                "deploymentGroupEndpoint": "",
+                                "project": "",
+                                "deploymentGroupName": "",
+                                "copyAzureVMTags": "true",
+                                "runAgentServiceAsUser": "false",
+                                "userName": "",
+                                "password": "",
+                                "outputVariable": "",
+                                "deploymentName": "",
+                                "deploymentOutputs": ""
+                            }
+                        }
+                    ]
+                }
+                
+            ],
+            "environmentOptions": {
+                "emailNotificationType": "OnlyOnFailure",
+                "emailRecipients": "release.environment.owner;release.creator",
+                "skipArtifactsDownload": false,
+                "timeoutInMinutes": 0,
+                "enableAccessToken": false,
+                "publishDeploymentStatus": true,
+                "badgeEnabled": false,
+                "autoLinkWorkItems": false,
+                "pullRequestDeploymentEnabled": false
+            },
+            "demands": [],
+            "conditions": [
+                {
+                    "name": "ReleaseStarted",
+                    "conditionType": 1,
+                    "value": ""
+                }
+            ],
+            "executionPolicy": {
+                "concurrencyCount": 1,
+                "queueDepthCount": 0
+            },
+            "schedules": [],
+            "retentionPolicy": {
+                "daysToKeep": 30,
+                "releasesToKeep": 3,
+                "retainBuild": true
+            },
+            "processParameters": {}
+        },
+        {
+            "name": "UAT",
+            "rank": 2,
+            "variables": {},
+            "variableGroups": [],
+            "preDeployApprovals": {
+                "approvals": [
+                    {
+                        "rank": 1,
+                        "isAutomated": true,
+                        "isNotificationOn": false
+                    }
+                ],
+                "approvalOptions": {
+                    "requiredApproverCount": null,
+                    "releaseCreatorCanBeApprover": false,
+                    "autoTriggeredAndPreviousEnvironmentApprovedCanBeSkipped": false,
+                    "enforceIdentityRevalidation": false,
+                    "timeoutInMinutes": 0,
+                    "executionOrder": 1
+                }
+            },
+            "deployStep": {},
+            "postDeployApprovals": {
+                "approvals": [
+                    {
+                        "rank": 1,
+                        "isAutomated": true,
+                        "isNotificationOn": false
+                    }
+                ],
+                "approvalOptions": {
+                    "requiredApproverCount": null,
+                    "releaseCreatorCanBeApprover": false,
+                    "autoTriggeredAndPreviousEnvironmentApprovedCanBeSkipped": false,
+                    "enforceIdentityRevalidation": false,
+                    "timeoutInMinutes": 0,
+                    "executionOrder": 2
+                }
+            },
+            "deployPhases": [
+                {
+                    "deploymentInput": {
+                        "parallelExecution": {
+                            "parallelExecutionType": 0
+                        },
+                        "skipArtifactsDownload": false,
+                        "artifactsDownloadInput": {
+                            "downloadInputs": [
+                                {
+                                    "artifactItems": [],
+                                    "alias": "{{BuildName}}",
+                                    "artifactType": "Build",
+                                    "artifactDownloadMode": "All"
+                                }
+                            ]
+                        },
+                        "queueId": "{{QueueId}}",
+                        "demands": [],
+                        "enableAccessToken": false,
+                        "timeoutInMinutes": 0,
+                        "jobCancelTimeoutInMinutes": 1,
+                        "condition": "succeeded()",
+                        "overrideInputs": {}
+                    },
+                    "rank": 1,
+                    "phaseType": 1,
+                    "name": "Agent job",
+                    "refName": null,
+                    "workflowTasks": [
+                        {
+                            "environment": {},
+                            "taskId": "94a74903-f93f-4075-884f-dc11f34058b4",
+                            "version": "2.*",
+                            "name": "Azure Deployment:Create Or Update Resource Group action on $(app-rg-uat)",
+                            "refName": "",
+                            "enabled": true,
+                            "alwaysRun": false,
+                            "continueOnError": false,
+                            "timeoutInMinutes": 0,
+                            "definitionType": "task",
+                            "overrideInputs": {},
+                            "condition": "succeeded()",
+                            "inputs": {
+                                "ConnectedServiceNameSelector": "ConnectedServiceName",
+                                "ConnectedServiceName": "{{ConnectedServiceID}}",
+                                "ConnectedServiceNameClassic": "",
+                                "action": "Create Or Update Resource Group",
+                                "resourceGroupName": "$(app-rg-uat)",
+                                "location": "West US 2",
+                                "templateLocation": "Linked artifact",
+                                "csmFileLink": "",
+                                "csmParametersFileLink": "",
+                                "csmFile": "$(System.DefaultWorkingDirectory)/{{BuildName}}/drop/template.json",
+                                "csmParametersFile": "$(System.DefaultWorkingDirectory)/{{BuildName}}/drop/parameters.json",
+                                "overrideParameters": "-appServicePlanName \"tw-svc-SRE10-{{ProjectName}}-uat\" -frontendAppName \"tw-frontend-SRE10-{{ProjectName}}-uat\" -inventoryServiceName \"tw-inventory-SRE10-{{ProjectName}}-uat\" -sqlConnectionString \"$(InventoryContextSQL-uat)\" -productServiceName \"tw-product-SRE10-{{ProjectName}}-uat\" -cosmosConnectionString \"$(MongoConnectionString-uat)\"",
+                                "deploymentMode": "Complete",
+                                "enableDeploymentPrerequisites": "None",
+                                "deploymentGroupEndpoint": "",
+                                "project": "",
+                                "deploymentGroupName": "",
+                                "copyAzureVMTags": "true",
+                                "runAgentServiceAsUser": "false",
+                                "userName": "",
+                                "password": "",
+                                "outputVariable": "",
+                                "deploymentName": "",
+                                "deploymentOutputs": ""
+                            }
+                        }
+                    ]
+                }
+            ],
+            "environmentOptions": {
+                "emailNotificationType": "OnlyOnFailure",
+                "emailRecipients": "release.environment.owner;release.creator",
+                "skipArtifactsDownload": false,
+                "timeoutInMinutes": 0,
+                "enableAccessToken": false,
+                "publishDeploymentStatus": true,
+                "badgeEnabled": false,
+                "autoLinkWorkItems": false,
+                "pullRequestDeploymentEnabled": false
+            },
+            "demands": [],
+            "conditions": [
+                {
+                    "name": "Dev",
+                    "conditionType": 2,
+                    "value": 4
+                }
+            ],
+            "executionPolicy": {
+                "concurrencyCount": 1,
+                "queueDepthCount": 0
+            },
+            "schedules": [],
+            "retentionPolicy": {
+                "daysToKeep": 30,
+                "releasesToKeep": 3,
+                "retainBuild": true
+            },
+            "processParameters": {},
+            "properties": {}
+        },
+        {
+            "name": "Prod",
+            "rank": 3,
+            "variables": {},
+            "variableGroups": [],
+            "preDeployApprovals": {
+                "approvals": [
+                    {
+                        "rank": 1,
+                        "isAutomated": false,
+                        "isNotificationOn": false,
+                        "approver": {
+                            "id": "{{ApproverId}}",
+                            "displayName": "{{ApproverDisplayName}}",
+                            "uniqueName": "{{ApproverUniqueName}}"
+                        }
+                    }
+                ],
+                "approvalOptions": {
+                    "requiredApproverCount": 1,
+                    "releaseCreatorCanBeApprover": true,
+                    "autoTriggeredAndPreviousEnvironmentApprovedCanBeSkipped": false,
+                    "enforceIdentityRevalidation": false,
+                    "timeoutInMinutes": 0,
+                    "executionOrder": 1
+                }
+            },
+            "deployStep": {},
+            "postDeployApprovals": {
+                "approvals": [
+                    {
+                        "rank": 1,
+                        "isAutomated": true,
+                        "isNotificationOn": false
+                    }
+                ],
+                "approvalOptions": {
+                    "requiredApproverCount": null,
+                    "releaseCreatorCanBeApprover": false,
+                    "autoTriggeredAndPreviousEnvironmentApprovedCanBeSkipped": false,
+                    "enforceIdentityRevalidation": false,
+                    "timeoutInMinutes": 0,
+                    "executionOrder": 2
+                }
+            },
+            "deployPhases": [
+                {
+                    "deploymentInput": {
+                        "parallelExecution": {
+                            "parallelExecutionType": 0
+                        },
+                        "skipArtifactsDownload": false,
+                        "artifactsDownloadInput": {
+                            "downloadInputs": [
+                                {
+                                    "artifactItems": [],
+                                    "alias": "{{BuildName}}",
+                                    "artifactType": "Build",
+                                    "artifactDownloadMode": "All"
+                                }
+                            ]
+                        },
+                        "queueId": "{{QueueId}}",
+                        "demands": [],
+                        "enableAccessToken": false,
+                        "timeoutInMinutes": 0,
+                        "jobCancelTimeoutInMinutes": 1,
+                        "condition": "succeeded()",
+                        "overrideInputs": {}
+                    },
+                    "rank": 1,
+                    "phaseType": 1,
+                    "name": "Agent job",
+                    "refName": null,
+                    "workflowTasks": [
+                        {
+                            "environment": {},
+                            "taskId": "94a74903-f93f-4075-884f-dc11f34058b4",
+                            "version": "2.*",
+                            "name": "Azure Deployment:Create Or Update Resource Group action on $(app-rg-prod)",
+                            "refName": "",
+                            "enabled": true,
+                            "alwaysRun": false,
+                            "continueOnError": false,
+                            "timeoutInMinutes": 0,
+                            "definitionType": "task",
+                            "overrideInputs": {},
+                            "condition": "succeeded()",
+                            "inputs": {
+                                "ConnectedServiceNameSelector": "ConnectedServiceName",
+                                "ConnectedServiceName": "{{ConnectedServiceID}}",
+                                "ConnectedServiceNameClassic": "",
+                                "action": "Create Or Update Resource Group",
+                                "resourceGroupName": "$(app-rg-prod)",
+                                "location": "West US 2",
+                                "templateLocation": "Linked artifact",
+                                "csmFileLink": "",
+                                "csmParametersFileLink": "",
+                                "csmFile": "$(System.DefaultWorkingDirectory)/{{BuildName}}/drop/template.json",
+                                "csmParametersFile": "$(System.DefaultWorkingDirectory)/{{BuildName}}/drop/parameters.json",
+                                "overrideParameters": "-appServicePlanName \"tw-svc-SRE10-{{ProjectName}}-prod\" -frontendAppName \"tw-frontend-SRE10-{{ProjectName}}-prod\" -inventoryServiceName \"tw-inventory-SRE10-{{ProjectName}}-prod\" -sqlConnectionString \"$(InventoryContextSQL-prod)\" -productServiceName \"tw-product-SRE10-{{ProjectName}}-prod\" -cosmosConnectionString \"$(MongoConnectionString-prod)\"",
+                                "deploymentMode": "Complete",
+                                "enableDeploymentPrerequisites": "None",
+                                "deploymentGroupEndpoint": "",
+                                "project": "",
+                                "deploymentGroupName": "",
+                                "copyAzureVMTags": "true",
+                                "runAgentServiceAsUser": "false",
+                                "userName": "",
+                                "password": "",
+                                "outputVariable": "",
+                                "deploymentName": "",
+                                "deploymentOutputs": ""
+                            }
+                        }
+                    ]
+                }
+            ],
+            "environmentOptions": {
+                "emailNotificationType": "OnlyOnFailure",
+                "emailRecipients": "release.environment.owner;release.creator",
+                "skipArtifactsDownload": false,
+                "timeoutInMinutes": 0,
+                "enableAccessToken": false,
+                "publishDeploymentStatus": true,
+                "badgeEnabled": false,
+                "autoLinkWorkItems": false,
+                "pullRequestDeploymentEnabled": false
+            },
+            "demands": [],
+            "conditions": [
+                {
+                    "name": "UAT",
+                    "conditionType": 2,
+                    "value": 4
+                }
+            ],
+            "executionPolicy": {
+                "concurrencyCount": 1,
+                "queueDepthCount": 0
+            },
+            "schedules": [],
+            "retentionPolicy": {
+                "daysToKeep": 30,
+                "releasesToKeep": 3,
+                "retainBuild": true
+            },
+            "processParameters": {},
+            "properties": {}
+        }
+    ],
+    "artifacts": [
+        {
+            "sourceId": "{{ProjectId}}:{{BuildId}}",
+            "type": "Build",
+            "alias": "{{BuildName}}",
+            "definitionReference": {
+                "defaultVersionBranch": {
+                    "id": "",
+                    "name": ""
+                },
+                "defaultVersionSpecific": {
+                    "id": "",
+                    "name": ""
+                },
+                "defaultVersionTags": {
+                    "id": "",
+                    "name": ""
+                },
+                "defaultVersionType": {
+                    "id": "latestType",
+                    "name": "Latest"
+                },
+                "definition": {
+                    "id": "{{BuildId}}",
+                    "name": "{{BuildName}}"
+                },
+                "project": {
+                    "id": "{{ProjectId}}",
+                    "name": "{{ProjectName}}"
+                }
+            },
+            "isPrimary": true
+        }
+    ],
+    "triggers": [
+        {
+            "artifactAlias": "{{BuildName}}",
+            "triggerConditions": [
+                {
+                    "sourceBranch": "master",
+                    "tags": [],
+                    "useBuildDefinitionBranch": false,
+                    "createReleaseOnBuildTagging": false
+                }
+            ],
+            "triggerType": 1
+        }
+    ]
+}

@@ -1,0 +1,153 @@
+{
+    "name": "web-app-infra-CI",
+    "type": 2,
+    "quality": 1,
+    "options": [
+        {
+            "enabled": false,
+            "definition": {
+                "id": "5d58cc01-7c75-450c-be18-a388ddb129ec"
+            },
+            "inputs": {
+                "branchFilters": "[\"+refs/heads/*\"]",
+                "additionalFields": "{}"
+            }
+        },
+        {
+            "enabled": false,
+            "definition": {
+                "id": "a9db38f9-9fdc-478c-b0f9-464221e58316"
+            },
+            "inputs": {
+                "workItemType": "Task",
+                "assignToRequestor": "true",
+                "additionalFields": "{}"
+            }
+        }
+    ],
+    "variables": {
+        "system.debug": {
+            "value": "false",
+            "allowOverride": true
+        }
+    },
+    "build": [
+
+
+        {
+            "environment": {},
+            "enabled": true,
+            "continueOnError": false,
+            "alwaysRun": false,
+            "displayName": "Validate Template",
+            "timeoutInMinutes": 0,
+            "condition": "succeeded()",
+            "task": {
+                "id": "94a74903-f93f-4075-884f-dc11f34058b4",
+                "versionSpec": "2.*",
+                "definitionType": "task"
+            },
+            "inputs": {
+                "ConnectedServiceNameSelector": "ConnectedServiceName",
+                "ConnectedServiceName": "{{ServiceConnectionId}}",
+                "action": "Create Or Update Resource Group",
+                "resourceGroupName": "SRE10-app-{{Project}}-dev",
+                "location": "West US 2",
+                "templateLocation": "Linked artifact",
+                "csmFileLink": "",
+                "csmParametersFileLink": "",
+                "csmFile": "template.json",
+                "csmParametersFile": "parameters.json",
+                "overrideParameters": "-appServicePlanName \"tw-svc-SRE10\" -frontendAppName \"tw-frontend-SRE10\" -inventoryServiceName \"tw-inventory-SRE10\" -sqlConnectionString \"fill me in\" -productServiceName \"tw-product-SRE10\" -cosmosConnectionString \"me too\"",
+                "deploymentMode": "Validation",
+                "enableDeploymentPrerequisites": "None",
+                "deploymentGroupEndpoint": "",
+                "project": "",
+                "deploymentGroupName": "",
+                "copyAzureVMTags": "true",
+                "runAgentServiceAsUser": "false",
+                "userName": "",
+                "password": "",
+                "outputVariable": "",
+                "deploymentName": "",
+                "deploymentOutputs": ""
+            }
+        },
+        {
+            "environment": {},
+            "enabled": true,
+            "continueOnError": false,
+            "alwaysRun": false,
+            "displayName": "Copy Files to: $(build.artifactstagingdirectory)",
+            "timeoutInMinutes": 0,
+            "condition": "succeeded()",
+            "task": {
+                "id": "5bfb729a-a7c8-4a78-a7c3-8d717bb7c13c",
+                "versionSpec": "2.*",
+                "definitionType": "task"
+            },
+            "inputs": {
+                "SourceFolder": "",
+                "Contents": "**/*.json",
+                "TargetFolder": "$(build.artifactstagingdirectory)",
+                "CleanTargetFolder": "false",
+                "OverWrite": "false",
+                "flattenFolders": "false"
+            }
+        },
+        {
+            "environment": {},
+            "enabled": true,
+            "continueOnError": false,
+            "alwaysRun": false,
+            "displayName": "Publish Artifact: drop",
+            "timeoutInMinutes": 0,
+            "condition": "succeeded()",
+            "task": {
+                "id": "2ff763a7-ce83-4e1f-bc89-0ae63477cebe",
+                "versionSpec": "1.*",
+                "definitionType": "task"
+            },
+            "inputs": {
+                "PathtoPublish": "$(Build.ArtifactStagingDirectory)",
+                "ArtifactName": "drop",
+                "ArtifactType": "Container",
+                "TargetPath": "",
+                "Parallel": "false",
+                "ParallelCount": "8"
+            }
+        }
+    ],
+    "repository": {
+        "properties": {
+            "cleanOptions": "0",
+            "labelSources": "0",
+            "labelSourcesFormat": "$(build.buildNumber)",
+            "reportBuildStatus": "true",
+            "gitLfsSupport": "false",
+            "skipSyncSource": "false",
+            "checkoutNestedSubmodules": "false",
+            "fetchDepth": "0"
+        },
+        "type": "TfsGit",
+        "name": "web-app-infra",
+        "url": "https://{VSTS}@dev.azure.com/{{VSTS}}/{{Project}}/_git/web-app-infra",
+        "defaultBranch": "refs/heads/master",
+        "clean": "false",
+        "checkoutSubmodules": false
+    },
+    "triggers": [
+        {
+           "branchFilters": [
+              "+refs/heads/master"
+           ],
+           "pathFilters": [],
+           "batchChanges": false,
+           "maxConcurrentBuildsPerBranch": 1,
+           "triggerType": "continuousIntegration"
+        }
+     ],
+    "queue": {
+        "id": "{{QueueId}}"
+    }
+}

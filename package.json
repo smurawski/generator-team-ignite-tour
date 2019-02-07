@@ -1,0 +1,59 @@
+{
+   "name": "generator-team-ignite-tour",
+   "version": "0.0.1",
+   "description": "Generates a demo environment in Azure DevOps",
+   "main": "./generators/app/index.js",
+   "scripts": {
+      "test": "node node_modules/istanbul/lib/cli.js cover --report cobertura --report lcov node_modules/mocha/bin/_mocha -- -R xunit -O output=unit.xml unit/test",
+      "unittest": "node node_modules/istanbul/lib/cli.js cover --report cobertura --report lcov node_modules/mocha/bin/_mocha -- -R xunit -O output=unit.xml unit/test",
+      "inttest": "node node_modules/istanbul/lib/cli.js cover --report cobertura --report lcov node_modules/mocha/bin/_mocha -- -R xunit -O output=unit.xml integration/test"
+   },
+   "files": [
+      "generators/app",
+      "generators/build",
+      "generators/git",
+      "generators/new-repo",
+      "generators/web-app-infra"
+   ],
+   "keywords": [
+      "yeoman-generator",
+      "Azure",
+      "DevOps",
+      "SRE",
+      "Ignite Tour"
+   ],
+   "author": "@StevenMurawski",
+   "repository": {
+      "type": "git",
+      "url": "https://github.com/smurawski/team-ignite-tour"
+   },
+   "license": "MIT",
+   "dependencies": {
+      "async": "^2.6.1",
+      "cheerio": "^1.0.0-rc.2",
+      "generator-team": "^0.4.10",
+      "node-env-file": "^0.1.8",
+      "pad": "^2.2.1",
+      "request": "^2.88.0",
+      "uuid": "^3.3.2",
+      "yeoman-generator": "^3.1.1",
+      "yosay": "^2.0.2"
+   },
+   "peerDependencies": {
+      "generator-team": ">= 0.4.10"
+   },
+   "devDependencies": {
+      "azure-arm-resource": "^3.1.1-preview",
+      "fs-extra": "^5.0.0",
+      "istanbul": "*",
+      "jshint": "^2.9.6",
+      "mocha": "^5.2.0",
+      "ms-rest-azure": "^2.5.7",
+      "proxyquire": "^2.1.0",
+      "sinon": "^4.5.0",
+      "sinon-test": "^2.3.0",
+      "yeoman-assert": "^3.1.1",
+      "yeoman-test": "^1.8.0",
+      "yo": "^2.0.5"
+   }
+}

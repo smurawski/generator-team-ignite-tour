@@ -1,0 +1,165 @@
+{
+    "name": "product-service-CI",
+    "type": 2,
+    "quality": 1,
+    "options": [
+        {
+            "enabled": false,
+            "definition": {
+                "id": "5d58cc01-7c75-450c-be18-a388ddb129ec"
+            },
+            "inputs": {
+                "branchFilters": "[\"+refs/heads/*\"]",
+                "additionalFields": "{}"
+            }
+        },
+        {
+            "enabled": false,
+            "definition": {
+                "id": "a9db38f9-9fdc-478c-b0f9-464221e58316"
+            },
+            "inputs": {
+                "workItemType": "Task",
+                "assignToRequestor": "true",
+                "additionalFields": "{}"
+            }
+        }
+    ],
+    "triggers": [
+        {
+            "branchFilters": [
+                "+refs/heads/master"
+            ],
+            "pathFilters": [],
+            "batchChanges": false,
+            "maxConcurrentBuildsPerBranch": 1,
+            "triggerType": "continuousIntegration"
+        }
+    ],
+    "variables": {
+        "system.debug": {
+            "value": "false",
+            "allowOverride": true
+        }
+    },
+    "retentionRules": [
+        {
+            "branches": [
+                "+refs/heads/*"
+            ],
+            "artifacts": [],
+            "artifactTypesToDelete": [
+                "FilePath",
+                "SymbolStore"
+            ],
+            "daysToKeep": 10,
+            "minimumToKeep": 1,
+            "deleteBuildRecord": true,
+            "deleteTestResults": true
+        }
+    ],
+    "build": [
+        {
+            "environment": {},
+            "enabled": true,
+            "continueOnError": false,
+            "alwaysRun": false,
+            "displayName": "Use Node 8.x",
+            "timeoutInMinutes": 0,
+            "condition": "succeeded()",
+            "task": {
+                "id": "31c75bbb-bcdf-4706-8d7c-4da6a1959bc2",
+                "versionSpec": "0.*",
+                "definitionType": "task"
+            },
+            "inputs": {
+                "versionSpec": "8.x",
+                "checkLatest": "false"
+            }
+        },
+        {
+            "environment": {},
+            "enabled": true,
+            "continueOnError": false,
+            "alwaysRun": false,
+            "displayName": "NPM Install",
+            "timeoutInMinutes": 0,
+            "condition": "succeeded()",
+            "task": {
+                "id": "d9bafed4-0b18-4f58-968d-86655b4d2ce9",
+                "versionSpec": "2.*",
+                "definitionType": "task"
+            },
+            "inputs": {
+                "script": "npm install",
+                "workingDirectory": "",
+                "failOnStderr": "false"
+            }
+        },
+        {
+            "environment": {},
+            "enabled": true,
+            "continueOnError": false,
+            "alwaysRun": false,
+            "displayName": "Archive Files",
+            "timeoutInMinutes": 0,
+            "condition": "succeeded()",
+            "task": {
+                "id": "d8b84976-e99a-4b86-b885-4849694435b0",
+                "versionSpec": "2.*",
+                "definitionType": "task"
+            },
+            "inputs": {
+                "rootFolderOrFile": ".",
+                "includeRootFolder": "false",
+                "archiveType": "zip",
+                "tarCompression": "gz",
+                "archiveFile": "$(Build.ArtifactStagingDirectory)/ProductService.zip",
+                "replaceExistingArchive": "true"
+            }
+        },
+        {
+            "environment": {},
+            "enabled": true,
+            "continueOnError": false,
+            "alwaysRun": false,
+            "displayName": "Publish Artifact: drop",
+            "timeoutInMinutes": 0,
+            "condition": "succeeded()",
+            "task": {
+                "id": "2ff763a7-ce83-4e1f-bc89-0ae63477cebe",
+                "versionSpec": "1.*",
+                "definitionType": "task"
+            },
+            "inputs": {
+                "PathtoPublish": "$(Build.ArtifactStagingDirectory)",
+                "ArtifactName": "drop",
+                "ArtifactType": "Container",
+                "TargetPath": "",
+                "Parallel": "false",
+                "ParallelCount": "8"
+            }
+        }
+    ],
+    "repository": {
+        "properties": {
+            "cleanOptions": "0",
+            "labelSources": "0",
+            "labelSourcesFormat": "$(build.buildNumber)",
+            "reportBuildStatus": "true",
+            "gitLfsSupport": "false",
+            "skipSyncSource": "false",
+            "checkoutNestedSubmodules": "false",
+            "fetchDepth": "0"
+        },
+        "type": "TfsGit",
+        "name": "product-service",
+        "url": "https://{{VSTS}}@dev.azure.com/{{VSTS}}/{{Project}}/_git/product-service",
+        "defaultBranch": "refs/heads/master",
+        "clean": "false",
+        "checkoutSubmodules": false
+    },
+    "queue": {
+        "id": "{{QueueId}}"
+    }
+}
