@@ -36,7 +36,7 @@ module.exports = class extends Generator {
 
         // Root files
         this.fs.copy(`${src}/.editorconfig`, `${root}/.editorconfig`);
-        this.fs.copy(`${src}/.gitignore`, `${root}/.gitignore`);
+        this.fs.copy(`${src}/gitignore.txt`, `${root}/.gitignore`);
         this.fs.copy(`${src}/Dockerfile`, `${root}/Dockerfile`);
         this.fs.copy(`${src}/inventory-service-multistage.Dockerfile`, `${root}/inventory-service-multistage.Dockerfile`);
         this.fs.copy(`${src}/inventory-service.Dockerfile`, `${root}/inventory-service.Dockerfile`);
