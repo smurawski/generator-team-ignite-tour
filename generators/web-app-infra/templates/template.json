@@ -82,7 +82,7 @@
         "properties": {
           "serverFarmId": "[resourceId('Microsoft.Web/serverfarms', parameters('appServicePlanName'))]",
           "siteConfig": {
-            "linuxFxVersion": "node|8.11",
+            "linuxFxVersion": "'php|7.2'",
             "appSettings": [
             ]
           },
