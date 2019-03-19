@@ -1,0 +1,2 @@
+PRODUCT_SERVICE_BASE_URL=http://localhost:8000
+INVENTORY_SERVICE_BASE_URL=http://localhost:5000

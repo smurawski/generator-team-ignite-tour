@@ -1,6 +1,6 @@
 {
    "name": "generator-team-ignite-tour",
-   "version": "0.0.4",
+   "version": "0.0.5",
    "description": "Generates a demo environment in Azure DevOps",
    "main": "./generators/app/index.js",
    "scripts": {},

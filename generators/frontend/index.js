@@ -37,7 +37,7 @@ module.exports = class extends Generator {
         // Root files
         this.fs.copy(`${src}/src`, `${root}/src`);
         this.fs.copy(`${src}/.dockerignore`, `${root}/.dockerignore`);
-        this.fs.copy(`${src}/.env`, `${root}/.env`);
+        this.fs.copy(`${src}/dotenv`, `${root}/.env`);
         this.fs.copy(`${src}/.eslintrc.json`, `${root}/.eslintrc.json`);
         this.fs.copy(`${src}/docker-startup.sh`, `${root}/docker-startup.sh`);
         this.fs.copy(`${src}/Dockerfile`, `${root}/Dockerfile`);
