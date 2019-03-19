@@ -1,0 +1,9 @@
+DB_CONNECTION_STRING="mongodb://tailwindlp1s3:vm356zI5zcpfwtP8uSRHtpp5uTvQdLZHG2atC7sZjiyAoDD7ZQwxDdPcq1lQc1kHWnfAaxURYinJPUeumWafSg%3D%3D@tailwindlp1s3.documents.azure.com:10255/tailwind?ssl=true"
+COSMOSDB_OR_MONGODB_CONNECTION_STRING="mongodb://tailwindlp1s3:vm356zI5zcpfwtP8uSRHtpp5uTvQdLZHG2atC7sZjiyAoDD7ZQwxDdPcq1lQc1kHWnfAaxURYinJPUeumWafSg%3D%3D@tailwindlp1s3.documents.azure.com:10255/tailwind?ssl=true"
+DB_NAME="tailwind"
+COLLECTION_NAME="inventory"
+ITEMS_AMOUNT=10000
+IMAGE_SIZE=250
+
+
+APPINSIGHTS_INSTRUMENTATIONKEY="627f9d53-9cb4-465a-8f9a-0d54f25a41ce"
